@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">PlacesNerby</string>
+    <string name="action_settings">search location</string>
+</resources>
