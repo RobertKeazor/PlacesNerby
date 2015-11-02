@@ -8,6 +8,9 @@ import android.support.v4.app.FragmentActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.util.ArrayList;
+
+import EventHandler.BUS;
 import Model.ClientSingleton;
 import Model.Places_API_Model;
 import Model.Places_API_Model_Implementatin;
@@ -50,6 +53,7 @@ public class PresenterImplementation implements NerbyPlacesPresenter,GoogleApiCl
   @Override
   public void onResponse(Response<RetrofitModel> response, Retrofit retrofit) {
 
+    BUS.getInstance().post(response);
   }
 
   @Override
