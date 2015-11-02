@@ -5,34 +5,34 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import Model.DataObj;
+import Model.Results;
+import Model.RetrofitModel;
 import assignment.example.lifesafe.com.placesnerby.R;
 
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> implements View
         .OnClickListener {
-    public ArrayList<DataObj> mItemTypes;
+    public ArrayList<Results> mItemTypes;
     Context context;
 
     TextView nameView;
 
 
 
-    public ListAdapter(ArrayList<DataObj> mItemTypes, Context context) {
+    public ListAdapter(ArrayList<Results> mItemTypes, Context context) {
         this.mItemTypes = new ArrayList<>(mItemTypes);
         this.context = context;
 
     }
-    public void addItem(int position,DataObj name) {
-        if (position > mItemTypes.size()) return;
 
-        mItemTypes.add(position, name);
-        notifyItemInserted(position);
-    }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.simplelistitem,
@@ -45,8 +45,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> im
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+     holder.nameView.setText(mItemTypes.get(position).getName());
+     holder.addressView.setText(mItemTypes.get(position).getFormatted_address());
+        if (mItemTypes.get(position).photos.get(0).getPhoto_reference() != null) {
 
-
+            Picasso.with(context).
+                    load(Key.PHOTOS_URL_BASE + mItemTypes.get(position).photos.get(0)
+                            .getPhoto_reference()).into(holder.image);
+        }
     }
 
     @Override
@@ -62,11 +68,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> im
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView nameView;
+        TextView addressView;
+        ImageView image;
 
         public ViewHolder(View itemView) {
             super(itemView);
-
-
+         nameView = (TextView) itemView.findViewById(R.id.name);
+            addressView= (TextView) itemView.findViewById(R.id.address);
+            image= (ImageView) itemView.findViewById(R.id.img_thumbnail);
 
 
         }

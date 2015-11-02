@@ -3,6 +3,8 @@ package assignment.example.lifesafe.com.placesnerby;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -19,6 +21,7 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.squareup.otto.Subscribe;
 
 import EventHandler.BUS;
+import Fragments.ListFragment;
 import Model.RetrofitModel;
 import Presenter.NerbyPlacesPresenter;
 import Presenter.PresenterImplementation;
@@ -30,11 +33,7 @@ public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryT
     private static final int REQUEST_PLACE_PICKER = 1;
     private SearchView mSearchView;
 
-    @Override
-    protected void onResume() {
-        BUS.getInstance().register(this);
-        super.onResume();
-    }
+
 
     private MenuItem searchMenuItem;
     ActionBar actionbar;
@@ -46,13 +45,18 @@ public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryT
         setContentView(R.layout.activity_nerby_place);
         mPlaces = new PresenterImplementation();
         mPlaces.onCreate(this);
+        FragmentManager fragmentManager =getSupportFragmentManager();
+        FragmentTransaction transaction =fragmentManager.beginTransaction();
+        ListFragment mGridViewFragment= new ListFragment();
+        transaction.add(R.id.container,mGridViewFragment,"frag1");
+        transaction.commit();
         actionbar = getSupportActionBar();
         actionbar.setBackgroundDrawable(getResources().getDrawable(R.drawable.background));
     }
 
     @Override
     protected void onPause() {
-        BUS.getInstance().unregister(this);
+
         super.onPause();
     }
 

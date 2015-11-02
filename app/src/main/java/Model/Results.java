@@ -1,7 +1,10 @@
 package Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Results {
-    public Photos[] photos;
+    public ArrayList<Photos> photos;
 
     private String id;
 
@@ -21,11 +24,20 @@ public class Results {
 
     private Geometry geometry;
 
-    public Photos[] getPhotos() {
-        return photos;
+
+    public String getName() {
+        return name;
     }
 
-    public void setPhotos(Photos[] photos) {
-        this.photos = photos;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFormatted_address() {
+        return formatted_address;
+    }
+
+    public void setFormatted_address(String formatted_address) {
+        this.formatted_address = formatted_address;
     }
 }
