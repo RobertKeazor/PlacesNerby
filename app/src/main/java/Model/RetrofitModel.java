@@ -3,11 +3,11 @@ package Model;
 import java.util.List;
 
 public class RetrofitModel {
-    private String next_page_token;
+    public String next_page_token;
 
-    private List<Results> results;
+    public List<Results> results;
 
-    private String[] html_attributions;
+    public String[] html_attributions;
 
-    private String status;
+    public String status;
 }

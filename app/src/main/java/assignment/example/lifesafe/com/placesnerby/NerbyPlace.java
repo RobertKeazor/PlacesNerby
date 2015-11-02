@@ -16,7 +16,10 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.squareup.otto.Subscribe;
 
+import EventHandler.BUS;
+import Model.RetrofitModel;
 import Presenter.NerbyPlacesPresenter;
 import Presenter.PresenterImplementation;
 import butterknife.Bind;
@@ -26,6 +29,13 @@ public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryT
 
     private static final int REQUEST_PLACE_PICKER = 1;
     private SearchView mSearchView;
+
+    @Override
+    protected void onResume() {
+        BUS.getInstance().register(this);
+        super.onResume();
+    }
+
     private MenuItem searchMenuItem;
     ActionBar actionbar;
     NerbyPlacesPresenter mPlaces;
@@ -34,10 +44,16 @@ public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryT
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nerby_place);
-        mPlaces=new PresenterImplementation();
+        mPlaces = new PresenterImplementation();
         mPlaces.onCreate(this);
         actionbar = getSupportActionBar();
         actionbar.setBackgroundDrawable(getResources().getDrawable(R.drawable.background));
+    }
+
+    @Override
+    protected void onPause() {
+        BUS.getInstance().unregister(this);
+        super.onPause();
     }
 
     @Override
@@ -58,7 +74,7 @@ public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryT
     @Override
     public boolean onQueryTextSubmit(String query) {
 
-        mPlaces.onStart(this);
+        mPlaces.callWebService();
         return false;
     }
 
@@ -68,4 +84,10 @@ public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryT
     }
 
 
+    @Subscribe
+
+    public void onReceive(RetrofitModel data) {
+
+        Toast.makeText(NerbyPlace.this, data.results.get(1).toString(), Toast.LENGTH_SHORT).show();
+    }
 }

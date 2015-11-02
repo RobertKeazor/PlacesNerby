@@ -10,13 +10,17 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 
+import Config.Key;
 import EventHandler.BUS;
 import Model.ClientSingleton;
 import Model.Places_API_Model;
 import Model.Places_API_Model_Implementatin;
+import Model.RetroFace;
 import Model.RetrofitModel;
 import Presenter.NerbyPlacesPresenter;
+import retrofit.Call;
 import retrofit.Callback;
+import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
@@ -45,15 +49,30 @@ public class PresenterImplementation implements NerbyPlacesPresenter,GoogleApiCl
     apiModel.okPlacePicker(context);
     }
 
-    @Override
+  @Override
+  public void callWebService() {
+
+
+    Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(Key.URL_BASE)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+    RetroFace apiCall =retrofit.create(RetroFace.class);
+    Call<RetrofitModel> call = apiCall.loadApi("android");
+    call.enqueue(this);
+  }
+
+  @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
 
   @Override
   public void onResponse(Response<RetrofitModel> response, Retrofit retrofit) {
+    RetrofitModel results= response.body();
 
-    BUS.getInstance().post(response);
+
+    BUS.getInstance().post(results);
   }
 
   @Override

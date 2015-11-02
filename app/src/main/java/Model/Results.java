@@ -1,7 +1,7 @@
 package Model;
 
 public class Results {
-    private Photos[] photos;
+    public Photos[] photos;
 
     private String id;
 
@@ -20,4 +20,12 @@ public class Results {
     private String reference;
 
     private Geometry geometry;
+
+    public Photos[] getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(Photos[] photos) {
+        this.photos = photos;
+    }
 }
