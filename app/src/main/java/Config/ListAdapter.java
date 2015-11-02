@@ -47,11 +47,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> im
     public void onBindViewHolder(final ViewHolder holder, final int position) {
      holder.nameView.setText(mItemTypes.get(position).getName());
      holder.addressView.setText(mItemTypes.get(position).getFormatted_address());
-        if (mItemTypes.get(position).photos.get(0).getPhoto_reference() != null) {
+        try {
 
             Picasso.with(context).
                     load(Key.PHOTOS_URL_BASE + mItemTypes.get(position).photos.get(0)
                             .getPhoto_reference()).into(holder.image);
+        }catch (Exception e){
+            holder.image.setImageResource(R.drawable.noimage);
         }
     }
 
