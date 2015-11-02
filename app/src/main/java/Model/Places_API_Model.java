@@ -10,6 +10,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 public interface Places_API_Model {
 
      GoogleApiClient LoadClient(FragmentActivity context,GoogleApiClient.OnConnectionFailedListener listener,GoogleApiClient.ConnectionCallbacks callbacks);
-     void okConnect (GoogleApiClient mclient,Context context);
-   void okDisconnect (GoogleApiClient mclient,Context context);
+     void okConnect ();
+   void okDisconnect ();
+    void okPlacePicker (Activity activity);
 }

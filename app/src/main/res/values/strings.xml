@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">PlacesNerby</string>
     <string name="action_settings">search location</string>
+    <string name="google_api_key">AIzaSyDpx-qOM4MKqkU-VLn8TDgBGIQ9o64_GlU</string>
 </resources>

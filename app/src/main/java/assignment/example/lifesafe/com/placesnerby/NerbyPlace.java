@@ -1,5 +1,6 @@
 package assignment.example.lifesafe.com.placesnerby;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBar;
@@ -11,22 +12,37 @@ import android.support.v7.widget.SearchView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
+import Presenter.NerbyPlacesPresenter;
+import Presenter.PresenterImplementation;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class NerbyPlace extends FragmentActivity implements SearchView.OnQueryTextListener {
+public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
+    private static final int REQUEST_PLACE_PICKER = 1;
     private SearchView mSearchView;
     private MenuItem searchMenuItem;
-    private android.app.ActionBar actionbar;
+    ActionBar actionbar;
+    NerbyPlacesPresenter mPlaces;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nerby_place);
-        actionbar=getActionBar();
+        mPlaces=new PresenterImplementation();
+        mPlaces.onCreate(this);
+        actionbar = getSupportActionBar();
         actionbar.setBackgroundDrawable(getResources().getDrawable(R.drawable.background));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     @Override
@@ -41,7 +57,8 @@ public class NerbyPlace extends FragmentActivity implements SearchView.OnQueryTe
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        Toast.makeText(getApplicationContext(), query, Toast.LENGTH_LONG).show();
+
+        mPlaces.onStart(this);
         return false;
     }
 

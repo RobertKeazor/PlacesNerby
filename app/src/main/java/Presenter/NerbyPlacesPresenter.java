@@ -1,10 +1,12 @@
 package Presenter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 
 
 public interface NerbyPlacesPresenter {
 
-    void onCreate (Context context);
-    void onStart (Context context);
+    void onCreate (FragmentActivity context);
+    void onStart (Activity context);
 }
