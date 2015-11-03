@@ -1,6 +1,10 @@
 package assignment.example.lifesafe.com.placesnerby;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -45,6 +49,7 @@ public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryT
         setContentView(R.layout.activity_nerby_place);
         mPlaces = new PresenterImplementation();
         mPlaces.onCreate(this);
+
         FragmentManager fragmentManager =getSupportFragmentManager();
         FragmentTransaction transaction =fragmentManager.beginTransaction();
         ListFragment mGridViewFragment= new ListFragment();
@@ -78,7 +83,7 @@ public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryT
     @Override
     public boolean onQueryTextSubmit(String query) {
 
-        mPlaces.callWebService();
+        mPlaces.callWebService(query);
         return false;
     }
 
@@ -94,4 +99,6 @@ public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryT
 
         Toast.makeText(NerbyPlace.this, data.results.get(1).toString(), Toast.LENGTH_SHORT).show();
     }
+
+
 }

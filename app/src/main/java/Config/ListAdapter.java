@@ -53,7 +53,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> im
                     load(Key.PHOTOS_URL_BASE + mItemTypes.get(position).photos.get(0)
                             .getPhoto_reference()).into(holder.image);
         }catch (Exception e){
-            holder.image.setImageResource(R.drawable.noimage);
+            holder.image.setImageResource(R.drawable.noimageman);
         }
     }
 

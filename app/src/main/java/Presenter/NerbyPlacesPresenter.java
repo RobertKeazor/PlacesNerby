@@ -9,5 +9,5 @@ public interface NerbyPlacesPresenter {
 
     void onCreate (FragmentActivity context);
     void onStart (Activity context);
-    void callWebService();
+    void callWebService(String query);
 }

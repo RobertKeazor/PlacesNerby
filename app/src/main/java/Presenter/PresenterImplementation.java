@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -50,7 +52,7 @@ public class PresenterImplementation implements NerbyPlacesPresenter,GoogleApiCl
     }
 
   @Override
-  public void callWebService() {
+  public void callWebService(String query) {
 
 
     Retrofit retrofit = new Retrofit.Builder()
@@ -58,7 +60,7 @@ public class PresenterImplementation implements NerbyPlacesPresenter,GoogleApiCl
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     RetroFace apiCall =retrofit.create(RetroFace.class);
-    Call<RetrofitModel> call = apiCall.loadApi("android");
+    Call<RetrofitModel> call = apiCall.loadApi(query);
     call.enqueue(this);
   }
 
@@ -69,10 +71,17 @@ public class PresenterImplementation implements NerbyPlacesPresenter,GoogleApiCl
 
   @Override
   public void onResponse(Response<RetrofitModel> response, Retrofit retrofit) {
-    RetrofitModel results= response.body();
+    if (response.isSuccess()) {
+
+      RetrofitModel results = response.body();
 
 
-    BUS.getInstance().post(results);
+      BUS.getInstance().post(results);
+    }
+   else {
+      Log.e("Error","ResponseFailed");
+
+    }
   }
 
   @Override

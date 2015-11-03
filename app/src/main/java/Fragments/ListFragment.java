@@ -52,7 +52,7 @@ public class ListFragment extends Fragment {
     @Subscribe
     public void LoadRecyclerView (RetrofitModel datamodel)
     {
-        //Toast.makeText(getActivity(),datamodel.results.size(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(),"LOOKING", Toast.LENGTH_SHORT).show();
         recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view);
         manager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(manager);
