@@ -1,6 +1,7 @@
 package Services;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -19,7 +21,7 @@ import android.widget.Toast;
 
 import assignment.example.lifesafe.com.placesnerby.R;
 
-public class MyService extends Service implements Runnable {
+public class LocationService extends Service implements Runnable {
 
     LocationManager mLocationManager;
     Location mLocation;
@@ -38,6 +40,11 @@ public class MyService extends Service implements Runnable {
         writeSignalGPS();
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return Service.START_STICKY;
+    }
+
     private void setCurrentLocation(Location loc) {
         currentLocation = loc;
     }
@@ -47,6 +54,7 @@ public class MyService extends Service implements Runnable {
         thread.start();
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void run() {
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
