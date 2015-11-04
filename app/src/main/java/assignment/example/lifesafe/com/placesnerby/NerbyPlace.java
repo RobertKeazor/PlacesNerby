@@ -1,5 +1,6 @@
 package assignment.example.lifesafe.com.placesnerby;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,8 +16,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageButton;
 import android.support.v7.widget.SearchView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +42,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryTextListener {
-
     private static final int REQUEST_PLACE_PICKER = 1;
     private SearchView mSearchView;
     private SharedPreferences pref;
@@ -47,6 +49,8 @@ public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryT
     private String coordinates;
     ActionBar actionbar;
     NerbyPlacesPresenter mPlaces;
+    private ProgressBar spinner;
+    private ProgressDialog progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +58,16 @@ public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryT
         setContentView(R.layout.activity_nerby_place);
         mPlaces = new PresenterImplementation();
         mPlaces.onCreate(this);
-        FragmentManager fragmentManager =getSupportFragmentManager();
-        FragmentTransaction transaction =fragmentManager.beginTransaction();
-        ListFragment mGridViewFragment= new ListFragment();
-        transaction.add(R.id.container,mGridViewFragment,"frag1");
+        spinner= (ProgressBar) findViewById(R.id.progressBar1);
+        spinner.setVisibility(View.INVISIBLE);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        ListFragment mGridViewFragment = new ListFragment();
+        transaction.add(R.id.container, mGridViewFragment, "frag1");
         transaction.commit();
         actionbar = getSupportActionBar();
         actionbar.setBackgroundDrawable(getResources().getDrawable(R.drawable.background));
+
     }
 
     @Override
@@ -92,9 +99,15 @@ public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryT
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-       pref= PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        coordinates= pref.getString("mylatitude","40.748817")+","+pref.getString("mylongitude","-73.985428");
-        Toast.makeText(NerbyPlace.this, pref.getString("mylatitude","Sorry"), Toast.LENGTH_SHORT).show();
+         progress = new ProgressDialog(this);
+        progress.setTitle("Loading");
+        progress.setMessage("Loading from Google Webserice...");
+        progress.show();
+        pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        coordinates = pref.getString("mylatitude", "40.748817") + "," + pref.getString
+                ("mylongitude", "-73.985428");
+        Toast.makeText(NerbyPlace.this, pref.getString("mylatitude", "Sorry"), Toast
+                .LENGTH_SHORT).show();
         mPlaces.callWebService(query, coordinates);
         return false;
     }
@@ -109,17 +122,27 @@ public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryT
 
     public void onReceive(RetrofitModel data) {
 
-        Toast.makeText(NerbyPlace.this, data.results.get(1).toString(), Toast.LENGTH_SHORT).show();
+       progress.dismiss();
     }
 
     @Subscribe
-    public void onReceive (Coordinates coordinates){
-        Toast.makeText(NerbyPlace.this, coordinates.getLat()+""+"Welll well", Toast.LENGTH_SHORT).show();
+    public void onReceive(Coordinates coordinates) {
+        Toast.makeText(NerbyPlace.this, coordinates.getLat() + "" + "Welll well", Toast
+                .LENGTH_SHORT).show();
 
-        Places_API_Model placepicker= new Places_API_Model_Implementatin();
-        placepicker.onePointIntent(this,coordinates.getLat(),coordinates.getLon());
+        Places_API_Model placepicker = new Places_API_Model_Implementatin();
+        placepicker.onePointIntent(this, coordinates.getLat(), coordinates.getLon());
 
     }
+
+    @Subscribe
+    public void onFailure (Throwable t){
+        progress.dismiss();
+        Toast.makeText(NerbyPlace.this, "Error Getting data,check connections", Toast
+                .LENGTH_SHORT).show();
+    }
+
+
 
 
 }

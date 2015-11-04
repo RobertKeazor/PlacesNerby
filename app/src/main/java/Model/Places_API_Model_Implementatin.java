@@ -69,7 +69,6 @@ public class Places_API_Model_Implementatin implements Places_API_Model {
         float longitude=Float.parseFloat(lon);
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(Locale.US, "geo:%" +
                 ".8f,%.8f", latitude, longitude)));
-        intent.setPackage("com.google.android.apps.maps");
 
         activity.startActivity(Intent.createChooser(intent, "Select an application"));
     }

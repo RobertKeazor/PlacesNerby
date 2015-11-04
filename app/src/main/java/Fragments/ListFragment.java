@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
@@ -20,14 +21,13 @@ import Model.Results;
 import Model.RetrofitModel;
 import assignment.example.lifesafe.com.placesnerby.R;
 
-/**
- * Created by rob2cool on 11/2/15.
- */
+
 public class ListFragment extends Fragment {
     RecyclerView recyclerView;
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager manager;
     View v;
+    private ProgressBar spinner;
 
     @Nullable
     @Override
@@ -59,6 +59,10 @@ public class ListFragment extends Fragment {
         recyclerView.setLayoutManager(manager);
         mAdapter=new ListAdapter( datamodel.getResults(),getActivity());
         recyclerView.setAdapter(mAdapter);
+        spinner= (ProgressBar) getActivity().findViewById(R.id.progressBar1);
+        spinner.setVisibility(View.GONE);
+
+
 
     }
 }

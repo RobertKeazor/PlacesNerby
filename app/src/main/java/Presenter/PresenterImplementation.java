@@ -86,6 +86,7 @@ public class PresenterImplementation implements NerbyPlacesPresenter,GoogleApiCl
 
   @Override
   public void onFailure(Throwable t) {
+    BUS.getInstance().post(t);
 
   }
 }
