@@ -46,6 +46,7 @@ public class Places_API_Model_Implementatin implements Places_API_Model {
     @Override
     public void okPlacePicker(Activity activity) {
         try {
+
             PlacePicker.IntentBuilder intentBuilder =
                     new PlacePicker.IntentBuilder();
             Intent intent = intentBuilder.build(activity);

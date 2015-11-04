@@ -1,4 +1,4 @@
-package Services;
+package assignment.example.lifesafe.com.placesnerby;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -17,7 +17,11 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
+
+import android.util.Log;
 import android.widget.Toast;
+
 
 import assignment.example.lifesafe.com.placesnerby.R;
 
@@ -61,8 +65,9 @@ public class LocationService extends Service implements Runnable {
         if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             Looper.prepare();
             mLocationListener = new MyLocationListener();
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager
-                    .PERMISSION_GRANTED && checkSelfPermission(Manifest.permission
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission
+                    .ACCESS_FINE_LOCATION) != PackageManager
+                    .PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getApplicationContext(),Manifest.permission
                     .ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
                 return;
@@ -93,9 +98,8 @@ public class LocationService extends Service implements Runnable {
         @Override
         public void onLocationChanged(Location loc) {
             if (loc != null) {
-                Toast.makeText(getBaseContext(),
-                        getResources().getString(R.string.gps_signal_found),
-                        Toast.LENGTH_LONG).show();
+
+                Log.v("Coordinates", loc.getLatitude() + "");
                 setCurrentLocation(loc);
                 handler.sendEmptyMessage(0);
             }

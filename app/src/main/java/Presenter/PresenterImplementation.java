@@ -52,7 +52,7 @@ public class PresenterImplementation implements NerbyPlacesPresenter,GoogleApiCl
     }
 
   @Override
-  public void callWebService(String query) {
+  public void callWebService(String query,String location) {
 
 
     Retrofit retrofit = new Retrofit.Builder()
@@ -60,7 +60,7 @@ public class PresenterImplementation implements NerbyPlacesPresenter,GoogleApiCl
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     RetroFace apiCall =retrofit.create(RetroFace.class);
-    Call<RetrofitModel> call = apiCall.loadApi(query);
+    Call<RetrofitModel> call = apiCall.loadApi(query,location);
     call.enqueue(this);
   }
 

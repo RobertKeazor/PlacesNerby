@@ -2,11 +2,13 @@ package Config;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -40,6 +42,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> im
 
         ViewHolder vh = new ViewHolder(v);
 
+
         return vh;
     }
 
@@ -55,6 +58,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> im
         }catch (Exception e){
             holder.image.setImageResource(R.drawable.noimageman);
         }
+
     }
 
     @Override
@@ -64,6 +68,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> im
 
     @Override
     public void onClick(View v) {
+
+
 
     }
 
@@ -75,13 +81,23 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> im
 
         public ViewHolder(View itemView) {
             super(itemView);
+
          nameView = (TextView) itemView.findViewById(R.id.name);
             addressView= (TextView) itemView.findViewById(R.id.address);
             image= (ImageView) itemView.findViewById(R.id.img_thumbnail);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, getPosition() + "", Toast.LENGTH_SHORT).show();
+                }
+
+            });
 
 
         }
 
     }
-
 }
+
+
+

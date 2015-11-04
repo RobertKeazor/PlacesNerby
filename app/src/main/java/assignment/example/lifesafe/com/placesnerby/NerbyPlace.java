@@ -2,10 +2,12 @@ package assignment.example.lifesafe.com.placesnerby;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -36,10 +38,9 @@ public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryT
 
     private static final int REQUEST_PLACE_PICKER = 1;
     private SearchView mSearchView;
-
-
-
+    private SharedPreferences pref;
     private MenuItem searchMenuItem;
+    private String coordinates;
     ActionBar actionbar;
     NerbyPlacesPresenter mPlaces;
 
@@ -49,7 +50,6 @@ public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryT
         setContentView(R.layout.activity_nerby_place);
         mPlaces = new PresenterImplementation();
         mPlaces.onCreate(this);
-
         FragmentManager fragmentManager =getSupportFragmentManager();
         FragmentTransaction transaction =fragmentManager.beginTransaction();
         ListFragment mGridViewFragment= new ListFragment();
@@ -82,8 +82,10 @@ public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryT
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-
-        mPlaces.callWebService(query);
+       pref= PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        coordinates= pref.getString("mylatitude","40.748817")+","+pref.getString("mylongitude","-73.985428");
+        Toast.makeText(NerbyPlace.this, pref.getString("mylatitude","Sorry"), Toast.LENGTH_SHORT).show();
+        mPlaces.callWebService(query,coordinates);
         return false;
     }
 
