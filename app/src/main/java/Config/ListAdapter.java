@@ -14,6 +14,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import EventHandler.BUS;
+import Model.Coordinates;
 import Model.DataObj;
 import Model.Results;
 import Model.RetrofitModel;
@@ -88,7 +90,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> im
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, getPosition() + "", Toast.LENGTH_SHORT).show();
+                    Coordinates coordinates = new Coordinates(mItemTypes.get(getPosition()).geometry.location.getLat(),mItemTypes.get(getPosition()).geometry.location.getLng());
+                    BUS.getInstance().post(coordinates);
+
                 }
 
             });

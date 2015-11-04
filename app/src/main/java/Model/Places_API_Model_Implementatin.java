@@ -3,6 +3,7 @@ package Model;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -10,6 +11,8 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+
+import java.util.Locale;
 
 
 public class Places_API_Model_Implementatin implements Places_API_Model {
@@ -59,5 +62,15 @@ public class Places_API_Model_Implementatin implements Places_API_Model {
         } catch (GooglePlayServicesNotAvailableException e) {
             // ...
         }
+    }
+    public void onePointIntent(Activity activity,String lat,String lon){
+
+        float latitude = Float.parseFloat(lat);
+        float longitude=Float.parseFloat(lon);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format(Locale.US, "geo:%" +
+                ".8f,%.8f", latitude, longitude)));
+        intent.setPackage("com.google.android.apps.maps");
+
+        activity.startActivity(Intent.createChooser(intent, "Select an application"));
     }
 }

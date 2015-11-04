@@ -13,4 +13,5 @@ public interface Places_API_Model {
      void okConnect ();
    void okDisconnect ();
     void okPlacePicker (Activity activity);
+    void onePointIntent(Activity activity,String lat,String lon);
 }

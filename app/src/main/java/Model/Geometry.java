@@ -2,7 +2,7 @@ package Model;
 
 public class Geometry
 {
-    private Location location;
+    public Location location;
 
     public Location getLocation ()
     {

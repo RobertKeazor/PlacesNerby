@@ -22,7 +22,7 @@ public class Results {
 
     private String reference;
 
-    private Geometry geometry;
+    public Geometry geometry;
 
 
     public String getName() {

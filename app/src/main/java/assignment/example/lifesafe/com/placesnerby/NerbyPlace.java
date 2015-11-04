@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.support.v7.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -28,6 +29,9 @@ import com.squareup.otto.Subscribe;
 
 import EventHandler.BUS;
 import Fragments.ListFragment;
+import Model.Coordinates;
+import Model.Places_API_Model;
+import Model.Places_API_Model_Implementatin;
 import Model.RetrofitModel;
 import Presenter.NerbyPlacesPresenter;
 import Presenter.PresenterImplementation;
@@ -61,8 +65,14 @@ public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryT
 
     @Override
     protected void onPause() {
-
+        BUS.getInstance().unregister(this);
         super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BUS.getInstance().register(this);
     }
 
     @Override
@@ -85,7 +95,7 @@ public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryT
        pref= PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         coordinates= pref.getString("mylatitude","40.748817")+","+pref.getString("mylongitude","-73.985428");
         Toast.makeText(NerbyPlace.this, pref.getString("mylatitude","Sorry"), Toast.LENGTH_SHORT).show();
-        mPlaces.callWebService(query,coordinates);
+        mPlaces.callWebService(query, coordinates);
         return false;
     }
 
@@ -100,6 +110,15 @@ public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryT
     public void onReceive(RetrofitModel data) {
 
         Toast.makeText(NerbyPlace.this, data.results.get(1).toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Subscribe
+    public void onReceive (Coordinates coordinates){
+        Toast.makeText(NerbyPlace.this, coordinates.getLat()+""+"Welll well", Toast.LENGTH_SHORT).show();
+
+        Places_API_Model placepicker= new Places_API_Model_Implementatin();
+        placepicker.onePointIntent(this,coordinates.getLat(),coordinates.getLon());
+
     }
 
 
