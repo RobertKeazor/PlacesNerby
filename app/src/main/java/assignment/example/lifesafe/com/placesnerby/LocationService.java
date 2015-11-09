@@ -33,6 +33,7 @@ public class LocationService extends Service implements Runnable {
     Location currentLocation = null;
     static SharedPreferences settings;
     static SharedPreferences.Editor configEditor;
+    boolean stopTheLoop;
 
     public IBinder onBind(Intent intent) {
         return null;
@@ -41,12 +42,24 @@ public class LocationService extends Service implements Runnable {
     public void onCreate() {
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         configEditor = settings.edit();
+        stopTheLoop=false;
         writeSignalGPS();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         return Service.START_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+
+        handler.removeCallbacksAndMessages(null);
+
+
+
+        Log.v("Service Terminating","Good");
+        super.onDestroy();
     }
 
     private void setCurrentLocation(Location loc) {
@@ -56,11 +69,13 @@ public class LocationService extends Service implements Runnable {
     private void writeSignalGPS() {
         Thread thread = new Thread(this);
         thread.start();
+
     }
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void run() {
+
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             Looper.prepare();
@@ -74,6 +89,7 @@ public class LocationService extends Service implements Runnable {
             }
             mLocationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER, 1000, 0, mLocationListener);
+            if (stopTheLoop){Looper.getMainLooper().quitSafely();}
             Looper.loop();
             //Looper.myLooper().quit();
         } else {

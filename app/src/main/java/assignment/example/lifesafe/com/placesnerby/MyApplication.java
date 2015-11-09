@@ -8,4 +8,10 @@ public class MyApplication extends Application {
         super.onCreate();
         startService(new Intent(this, LocationService.class));
     }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+
+    }
 }

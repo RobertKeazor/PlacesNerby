@@ -88,6 +88,14 @@ public class NerbyPlace extends AppCompatActivity implements SearchView.OnQueryT
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Toast.makeText(NerbyPlace.this, "Activity Destroyed:LocationService Stop", Toast.LENGTH_SHORT).show();
+        stopService(new Intent(this, LocationService.class));
+
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.options_menu, menu);
         searchMenuItem = menu.findItem(R.id.action_search);
