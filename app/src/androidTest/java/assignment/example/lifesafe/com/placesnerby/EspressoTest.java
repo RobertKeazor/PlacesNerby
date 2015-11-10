@@ -33,6 +33,6 @@ public class EspressoTest {
         onView(withId(R.id.action_settings)).perform(click());
 
 
-        onView(withText("Loading from Google Webserice...")).check(matches(isDisplayed()));
+        onView(withId(R.id.progressBar1)).check(matches(isDisplayed()));
     }
 }
